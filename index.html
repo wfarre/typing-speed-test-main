@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <title>Frontend Mentor | Typing Speed Test</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <link rel="stylesheet" href="./styles/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <ul class="flex">
+        <li>
+          <img src="./assets/images/logo-large.svg" alt="Typing Speed Test Logo">
+        </li>
+        <li class="flex">
+          <img src="./assets/images/icon-personal-best.svg" alt="">
+          <p>Personal best: <span>92 WPM</span></p>
+        </li>
+      </ul>
+      <ul class="flex settings">
+        <li>
+          <ul class="flex stat">
+            <li class="flex">
+              <p class="label">WPM:</p>
+              <p class="content">46</p>
+            </li>
+            <li class="flex">
+              <p class="label">Accuracy:</p>
+              <p class="content">46</p>
+            </li>
+            <li class="flex">
+              <p class="label">Time:</p>
+              <p class="content">46</p>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <ul class="flex">
+            <li>
+              <p>Difficulty:</p>
+            </li>
+            <li>
+
+              <input value="easy" type="radio" id="easy" name="difficulty" checked>
+              <label for="easy">
+                Easy
+              </label>
+            </li>
+            <li>
+
+              <input value="medium" type="radio" id="medium" name="difficulty">
+              <label for="medium">
+                Medium
+              </label>
+            </li>
+            <li>
+              <input value="hard" type="radio" id="hard" name="difficulty">
+              <label for="hard">
+                Hard
+              </label>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <ul class="flex">
+            <li>
+              <p> Mode:</p>
+            </li>
+            <li>
+              <input type="radio" id="timed" name="mode" checked>
+              <label for="timed">
+                Timed (60s)
+              </label>
+            </li>
+            <li>
+              <input type="radio" id="Passage" name="mode">
+              <label for="Passage">
+                Passage
+              </label>
+            </li>
+          </ul>
+
+
+        </li>
+      </ul>
+    </header>
+
+    <main class="main">
+      <input id="typed-text" type="text" value="">
+      <p class="text-to-type">
+
+      </p>
+      <!-- <div>
+        <button>Start Test</button>
+        <span>Or click the text and start typing</span>
+      </div> -->
+    </main>
+
+
+
+
+
+
+
+    <footer class="footer">
+      <button class="btn">Restart Test<img src="./assets/images/icon-restart.svg" alt=""></button>
+    </footer>
+
+
+    <!-- Test Complete End -->
+
+    <div class="attribution">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.
+      Coded by <a href="#">Your Name Here</a>.
+    </div>
+  </div>
+
+  <script>
+    const difficultyButtons = document.querySelectorAll("input[type='radio'][name='difficulty']");
+    const typedTextDOM = document.getElementById('typed-text');
+    const textToTypeDOM = document.querySelector('.text-to-type');
+    let textToType = "The dog ran across the park chasing a ball. He was fast and loved to play. After a while, he got tired and lay down in the cool shade of a big oak tree.";
+    let currentDifficulty = "easy";
+
+
+    const compareText = (userInput, expectedInput) => {
+      const userInputArray = userInput.split("");
+      const expectedInputArray = expectedInput.split("");
+
+      console.log(userInputArray);
+      console.log(expectedInputArray);
+
+      userInputArray.forEach((word, index) => {
+        const isWordCorrect = isCurrentWordCorrect(word, expectedInputArray[index]);
+        textToTypeDOM.children[index].classList.remove("neutral", "correct", "incorrect", "current");
+        textToTypeDOM.children[index].classList.add(isWordCorrect ? "correct" : "incorrect");
+        textToTypeDOM.children[index + 1].classList.add("current");
+      });
+    }
+
+    const isCurrentWordCorrect = (currentWord, expectedWord) => {
+      // Normalize characters for comparison
+      const normalizeChar = (char) => {
+        // Treat hyphen, en dash, and em dash as equivalent
+        if (char === '—' || char === '–' || char === '-') return '-';
+        return char;
+      };
+
+      return normalizeChar(currentWord) === normalizeChar(expectedWord);
+    }
+
+    function handleKeyPress(event) {
+      const key = event.key;
+      typedTextDOM.value += key;
+      typedTextDOM.dispatchEvent(new Event('input'));
+    }
+
+    const generateText = (text) => {
+      let textArray = text.split("")
+      textArray.forEach(word => {
+        const wordSpan = document.createElement("span");
+        wordSpan.classList.add("word");
+        wordSpan.classList.add("neutral");
+        wordSpan.textContent = word;
+        textToTypeDOM.appendChild(wordSpan);
+      });
+
+
+      // Logic to generate text based on difficulty can be added here
+      // return "The dog ran across the park chasing a ball. He was fast and loved to play. After a while, he got tired and lay down in the cool shade of a big oak tree.";
+    }
+
+    const loadTextToType = () => {
+      textToTypeDOM.innerHTML = "";
+      typedTextDOM.value = "";
+
+      fetch("./data.json")
+        .then(res => res.json())
+        .then(data => {
+          const randomIndex = Math.floor(Math.random() * data[currentDifficulty].length);
+          const text = data[currentDifficulty][randomIndex].text;
+          textToType = text;
+          generateText(text);
+        })
+        .catch(err => console.error(err));
+    }
+
+
+
+
+
+    loadTextToType();
+
+
+
+    difficultyButtons.forEach(radioButton => {
+      radioButton.addEventListener('change', (e) => {
+        console.log(e.target.value);
+        currentDifficulty = e.target.value;
+        loadTextToType();
+
+        // Logic to change text based on difficulty can be added here
+      });
+    });
+
+
+    const text = textToType.innerText;
+
+
+
+    document.addEventListener('keypress', handleKeyPress);
+
+
+
+
+    typedTextDOM.addEventListener('input', (e) => {
+      compareText(e.target.value, textToType);
+    });
+
+
+
+
+  </script>
+</body>
+
+</html>
