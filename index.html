@@ -31,7 +31,7 @@
           <ul class="flex stat">
             <li class="flex">
               <p class="label">WPM:</p>
-              <p class="content">46</p>
+              <p id="wpm" class="content">46</p>
             </li>
             <li class="flex">
               <p class="label">Accuracy:</p>
@@ -39,7 +39,7 @@
             </li>
             <li class="flex">
               <p class="label">Time:</p>
-              <p class="content">46</p>
+              <p id="remaining-time" class="content">46</p>
             </li>
           </ul>
         </li>
@@ -97,14 +97,14 @@
     </header>
 
     <main class="main">
-      <input id="typed-text" type="text" value="">
-      <p class="text-to-type">
-
-      </p>
-      <!-- <div>
-        <button>Start Test</button>
+      <div class="start-modal">
+        <button type="button" id="start-btn" class="btn btn-start ">Start Typing Test</button>
         <span>Or click the text and start typing</span>
-      </div> -->
+      </div>
+      <section class="section-text">
+        <input id="typed-text" type="text" value="">
+        <p class="text-to-type"></p>
+      </section>
     </main>
 
 
@@ -126,112 +126,7 @@
     </div>
   </div>
 
-  <script>
-    const difficultyButtons = document.querySelectorAll("input[type='radio'][name='difficulty']");
-    const typedTextDOM = document.getElementById('typed-text');
-    const textToTypeDOM = document.querySelector('.text-to-type');
-    let textToType = "The dog ran across the park chasing a ball. He was fast and loved to play. After a while, he got tired and lay down in the cool shade of a big oak tree.";
-    let currentDifficulty = "easy";
-
-
-    const compareText = (userInput, expectedInput) => {
-      const userInputArray = userInput.split("");
-      const expectedInputArray = expectedInput.split("");
-
-      console.log(userInputArray);
-      console.log(expectedInputArray);
-
-      userInputArray.forEach((word, index) => {
-        const isWordCorrect = isCurrentWordCorrect(word, expectedInputArray[index]);
-        textToTypeDOM.children[index].classList.remove("neutral", "correct", "incorrect", "current");
-        textToTypeDOM.children[index].classList.add(isWordCorrect ? "correct" : "incorrect");
-        textToTypeDOM.children[index + 1].classList.add("current");
-      });
-    }
-
-    const isCurrentWordCorrect = (currentWord, expectedWord) => {
-      // Normalize characters for comparison
-      const normalizeChar = (char) => {
-        // Treat hyphen, en dash, and em dash as equivalent
-        if (char === '—' || char === '–' || char === '-') return '-';
-        return char;
-      };
-
-      return normalizeChar(currentWord) === normalizeChar(expectedWord);
-    }
-
-    function handleKeyPress(event) {
-      const key = event.key;
-      typedTextDOM.value += key;
-      typedTextDOM.dispatchEvent(new Event('input'));
-    }
-
-    const generateText = (text) => {
-      let textArray = text.split("")
-      textArray.forEach(word => {
-        const wordSpan = document.createElement("span");
-        wordSpan.classList.add("word");
-        wordSpan.classList.add("neutral");
-        wordSpan.textContent = word;
-        textToTypeDOM.appendChild(wordSpan);
-      });
-
-
-      // Logic to generate text based on difficulty can be added here
-      // return "The dog ran across the park chasing a ball. He was fast and loved to play. After a while, he got tired and lay down in the cool shade of a big oak tree.";
-    }
-
-    const loadTextToType = () => {
-      textToTypeDOM.innerHTML = "";
-      typedTextDOM.value = "";
-
-      fetch("./data.json")
-        .then(res => res.json())
-        .then(data => {
-          const randomIndex = Math.floor(Math.random() * data[currentDifficulty].length);
-          const text = data[currentDifficulty][randomIndex].text;
-          textToType = text;
-          generateText(text);
-        })
-        .catch(err => console.error(err));
-    }
-
-
-
-
-
-    loadTextToType();
-
-
-
-    difficultyButtons.forEach(radioButton => {
-      radioButton.addEventListener('change', (e) => {
-        console.log(e.target.value);
-        currentDifficulty = e.target.value;
-        loadTextToType();
-
-        // Logic to change text based on difficulty can be added here
-      });
-    });
-
-
-    const text = textToType.innerText;
-
-
-
-    document.addEventListener('keypress', handleKeyPress);
-
-
-
-
-    typedTextDOM.addEventListener('input', (e) => {
-      compareText(e.target.value, textToType);
-    });
-
-
-
-
-  </script>
+  <script src="./main2.js" type="module"></script>
 </body>
 
 </html>
