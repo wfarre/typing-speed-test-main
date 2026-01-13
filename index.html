@@ -23,87 +23,121 @@
         </li>
         <li class="flex">
           <img src="./assets/images/icon-personal-best.svg" alt="">
-          <p>Personal best: <span>92 WPM</span></p>
+          <p class="text-preset-4">Personal best: <span>92 WPM</span></p>
         </li>
       </ul>
-      <ul class="flex settings">
-        <li>
-          <ul class="flex stat">
-            <li class="flex">
-              <p class="label">WPM:</p>
-              <p id="wpm" class="content">46</p>
-            </li>
-            <li class="flex">
-              <p class="label">Accuracy:</p>
-              <p class="content" id="accuracy">46</p>
-            </li>
-            <li class="flex">
-              <p class="label">Time:</p>
-              <p id="remaining-time" class="content">46</p>
-            </li>
-          </ul>
-        </li>
+      <div class="flex data">
 
-        <li>
-          <ul class="flex">
-            <li>
-              <p>Difficulty:</p>
-            </li>
-            <li>
+        <ul class="flex stat">
+          <li class="flex">
+            <p class="label text-preset-3">WPM:</p>
+            <p id="wpm" class="content text-preset-2">--</p>
+          </li>
+          <li class="flex">
+            <p class="label text-preset-3">Accuracy:</p>
+            <p class="content text-preset-2" id="accuracy">--</p>
+          </li>
+          <li class="flex">
+            <p class="label text-preset-3">Time:</p>
+            <p id="remaining-time" class="content text-preset-2">--</p>
+          </li>
+        </ul>
 
-              <input value="easy" type="radio" id="easy" name="difficulty" checked>
-              <label for="easy">
-                Easy
-              </label>
-            </li>
-            <li>
 
-              <input value="medium" type="radio" id="medium" name="difficulty">
-              <label for="medium">
-                Medium
-              </label>
-            </li>
-            <li>
-              <input value="hard" type="radio" id="hard" name="difficulty">
-              <label for="hard">
-                Hard
-              </label>
-            </li>
-          </ul>
-        </li>
+        <div class="flex settings">
 
-        <li>
-          <ul class="flex">
+          <!-- Desktop Button-Style Radio Buttons -->
+          <ul class="flex select">
             <li>
-              <p> Mode:</p>
+              <p class="text-preset-5">Difficulty:</p>
             </li>
             <li>
-              <input type="radio" id="timed" name="mode" checked>
-              <label for="timed">
-                Timed (60s)
-              </label>
+              <input value="easy" type="radio" id="easy-desktop" name="difficulty-desktop">
+              <label class="text-preset-5" for="easy-desktop">Easy</label>
             </li>
             <li>
-              <input type="radio" id="Passage" name="mode">
-              <label for="Passage">
-                Passage
-              </label>
+              <input value="medium" type="radio" id="medium-desktop" name="difficulty-desktop">
+              <label class="text-preset-5" for="medium-desktop">Medium</label>
+            </li>
+            <li>
+              <input value="hard" type="radio" id="hard-desktop" name="difficulty-desktop" checked>
+              <label class="text-preset-5" for="hard-desktop">Hard</label>
             </li>
           </ul>
 
+          <div class="separator"></div>
 
-        </li>
-      </ul>
+          <ul class="flex select">
+            <li>
+              <p class="text-preset-5">Mode:</p>
+            </li>
+            <li>
+              <input type="radio" id="timed-desktop" name="mode-desktop" checked>
+              <label class="text-preset-5" for="timed-desktop">Timed (60s)</label>
+            </li>
+            <li>
+              <input type="radio" id="passage-desktop" name="mode-desktop">
+              <label class="text-preset-5" for="passage-desktop">Passage</label>
+            </li>
+          </ul>
+
+          <!-- Mobile Dropdowns -->
+          <div class="dropdown">
+            <button class="dropdown-button text-preset-5" id="difficulty-dropdown">
+              <span id="difficulty-selected">Hard</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="dropdown-menu" id="difficulty-menu">
+              <label class="dropdown-item text-preset-5">
+                <input value="easy" type="radio" id="easy-mobile" name="difficulty-mobile">
+                <span>Easy</span>
+              </label>
+              <label class="dropdown-item text-preset-5">
+                <input value="medium" type="radio" id="medium-mobile" name="difficulty-mobile">
+                <span>Medium</span>
+              </label>
+              <label class="dropdown-item text-preset-5">
+                <input value="hard" type="radio" id="hard-mobile" name="difficulty-mobile" checked>
+                <span>Hard</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="dropdown">
+            <button class="dropdown-button text-preset-5" id="mode-dropdown">
+              <span id="mode-selected">Timed (60s)</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="dropdown-menu" id="mode-menu">
+              <label class="dropdown-item text-preset-5">
+                <input type="radio" id="timed-mobile" name="mode-mobile" checked>
+                <span>Timed (60s)</span>
+              </label>
+              <label class="dropdown-item text-preset-5">
+                <input type="radio" id="passage-mobile" name="mode-mobile">
+                <span>Passage</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+
+
+      </div>
     </header>
 
     <main class="main">
       <div class="start-modal">
-        <button type="button" id="start-btn" class="btn btn-start ">Start Typing Test</button>
-        <span>Or click the text and start typing</span>
+        <button type="button" id="start-btn" class="btn btn-start text-preset-3-semibold ">Start Typing Test</button>
+        <span class="text-preset-3-semibold">Or click the text and start typing</span>
       </div>
       <section class="section-text">
-        <input id="typed-text" type="text" value="">
-        <p class="text-to-type"></p>
+        <p class="text-to-type text-preset-1-regular"></p>
       </section>
     </main>
 
@@ -114,7 +148,8 @@
 
 
     <footer class="footer">
-      <button class="btn">Restart Test<img src="./assets/images/icon-restart.svg" alt=""></button>
+      <button id="restart-btn" class="btn text-preset-3-semibold">Restart Test<img
+          src="./assets/images/icon-restart.svg" alt=""></button>
     </footer>
 
 

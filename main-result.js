@@ -1,4 +1,5 @@
-import { displayResults, loadResultsFromStorage } from "./utils.js";
+import { loadResultsFromStorage } from "./utils.js";
+import { displayResultsDOM } from "./DOM.js";
 
 const results = loadResultsFromStorage();
-displayResults(results);
+displayResultsDOM(results);

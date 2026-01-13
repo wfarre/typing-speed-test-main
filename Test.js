@@ -1,18 +1,14 @@
 import {
   getWordPerMinute,
   compareTextChars,
-  compareTextWords,
-  loadResultsFromStorage,
   getTextDataFrom,
   saveUserResults,
   getAccuracy,
+  TIMER_INTERVAL,
 } from "./utils.js";
 
-const TIMER_INTERVAL = 10; // 60 seconds
-
 class Test {
-  textToType =
-    "The dog ran across the park chasing a ball. He was fast and loved to play. After a while, he got tired and lay down in the cool shade of a big oak tree.";
+  textToType = "";
   userInput = "";
   currentDifficulty = "easy";
   currentTime = TIMER_INTERVAL;
@@ -21,14 +17,12 @@ class Test {
   isTestRunning = false;
   correct = 0;
   incorrect = 0;
-  typedLength = 0;
 
   startTest = () => {
-    document.querySelector(".start-modal")?.classList.add("hidden");
     this.isTestRunning = true;
   };
 
-  testComplete = () => {
+  endTest = () => {
     const userResult = {
       wpm: this.wpm,
       correct: this.correct,
@@ -36,8 +30,6 @@ class Test {
       accuracy: this.accuracy,
     };
     saveUserResults(userResult);
-
-    document.querySelector(".start-modal")?.classList.remove("hidden");
     document.location.replace("./results.html");
     this.isTestRunning = false;
   };
@@ -59,19 +51,23 @@ class Test {
   };
 
   checkUserInput = () => {
-    const charCorrect = compareTextChars(this.userInput, this.textToType);
+    const typedLength = this.userInput.length || 0;
+    if (typedLength > this.textToType.length - 1) {
+      this.endTest();
+    }
 
+    const charCorrect = compareTextChars(this.userInput, this.textToType);
     this.correct = charCorrect.correct;
     this.incorrect = charCorrect.incorrect;
-    this.typedLength = this.userInput.length || 0;
-
-    this.wordTypedLength = this.userInput.split(" ").length || 0;
     this.accuracy =
-      this.typedLength === 0 ? 0 : getAccuracy(this.correct, this.typedLength);
+      typedLength === 0 ? 0 : getAccuracy(this.correct, typedLength);
   };
 
-  updateWpm = (wordsTyped) => {
-    this.wpm = getWordPerMinute(this.currentTime, wordsTyped);
+  updateWpm = () => {
+    this.wpm = getWordPerMinute(
+      this.currentTime,
+      this.userInput.split(" ").length
+    );
   };
 
   reset = () => {
@@ -82,7 +78,6 @@ class Test {
     this.isTestRunning = false;
     this.correct = 0;
     this.incorrect = 0;
-    this.typedLength = 0;
   };
 }
 
